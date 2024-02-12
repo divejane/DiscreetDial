@@ -1,2 +1,3 @@
 # EnigmaChat
-P2P chat room service that offers a secure &amp; anonymous messaging experience.
+
+Final-stage versions are pushed here for testing before hitting main
