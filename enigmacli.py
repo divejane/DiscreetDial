@@ -90,7 +90,6 @@ def roomhost_load():
     peerinfo_s.connect((HOST, PORT))
     peerinfo = pickle.loads(peerinfo_s.recv(1024))
     while not host_established:
-        
         print('\n\n[########-------------------------] 24% \nroom configured, awaiting peer establishment...')
 
 # Homepage
