@@ -7,7 +7,7 @@ import socket
 import pickle 
 import os
 
-HOST = "3.21.248.228"
+HOST = "18.225.117.43"
 PORT = 9236
 username = "anon"
 
@@ -43,12 +43,13 @@ def roomlist_load(): # List room names
 
     # Send request to server to delete room information 
     else:
-        deleterequest = [b'deleterequest', usinp]
+        deleterequest = str.encode(f'deleterequest{usinp}')
         roomjoin_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         roomjoin_socket.connect((HOST, PORT))
-        roomjoin_socket.sendall(pickle.dumps(deleterequest)) # Send room list index to server with deleterequest
+        roomjoin_socket.sendall(deleterequest) # Send room list index to server with deleterequest
         roomjoin_socket.close()
-    
+        roomjoin_load()
+
 def room_gen(): 
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
@@ -63,9 +64,11 @@ def room_gen():
             hostgen_socket.close()
             break
         print("room name and/or password must not be longer than 16 characters\n")
+    print(f"\nverify room information: \nroom name: {roomname}\nroom password: {password}")
+
     print("room configured, type 0 to exit")
     if point_check(1) == 1: main() 
-        
+
 def settings():
     cls()
     global username
@@ -76,20 +79,25 @@ def settings():
     if usinp == 1: 
         username = input("enter username: ")
         settings()
-    if usinp == 2: main()
-    
+
+def roomjoin_load():
+    pass 
+    # loading screen / wait screen for host conection
+    # could do a wait screen -> load screen, or have waiting integrated into the loading screen progress bar, like:
+    #          [################-----------------] 43%
+    #              awaiting peer establishment
 
 def main():
     cls()
-    
+
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('1) join a room\n2) create a room\n3) settings\n')
-    
+
     point = point_check(3)
 
     if point == 1: roomlist_load()
     if point == 2: room_gen()
     if point == 3: settings()
-    
+
 if __name__ == "__main__":
     main()
