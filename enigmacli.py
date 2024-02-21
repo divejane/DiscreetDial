@@ -1,6 +1,3 @@
-# TODO: room_gen structure needs the host to remain in a listening state for connections instead of just
-# creating the room and leaving it   
-# TODO: fix "ran out of input" on client and similiar error on server, likely issue with incorrect stack on data transfer TRY: db commenting the if deleterequest
 # TODO: remove all db lines, including the fake hostlist in the server 
 
 import socket
