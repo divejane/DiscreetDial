@@ -1,6 +1,6 @@
 # TODO: remove all db lines, including the fake hostlist in the server 
 
-import socket, os, pickle
+import socket, os, pickle, asyncio
 
 HOST = "18.225.117.43"
 PORT = 9236
@@ -86,11 +86,7 @@ def roomjoin_load():
 def roomhost_load():
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    peerinfo_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    peerinfo_s.connect((HOST, PORT))
-    peerinfo = pickle.loads(peerinfo_s.recv(1024))
-    while not host_established:
-        print('\n\n[########-------------------------] 24% \nroom configured, awaiting peer establishment...')
+#        print('\n\n[########-------------------------] 24% \nroom configured, awaiting peer establishment...')
 
 # Homepage
 def main():
