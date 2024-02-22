@@ -2,8 +2,9 @@
 
 import socket, os, pickle, asyncio
 
-HOST = "18.225.117.43"
+HOST = "13.59.31.127"
 PORT = 9236
+
 username = "anon"
 
 cls = lambda: os.system('cls' if os.name=='nt' else 'clear')
@@ -32,7 +33,7 @@ def roomlist_load(): # List room names
         print(f'{x+1}) {roomname[2]}')
     print('____________________')
     print('\nenter room to join (0 to exit) -')
-    usinp = point_check(len(open_hosts)-1) # db change -1 if last room cant be selected
+    usinp = point_check(len(open_hosts)-1) 
 
     # Exit if usinp == 0
     if usinp == 0: 
@@ -51,17 +52,15 @@ def room_gen():
         password = input("enter room password: ")  
         if 0 < len(roomname) < 16 and 0 < len(password) < 16:
             host_info = pickle.dumps([roomname, password])
-            hostgen_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            hostgen_socket.connect((HOST, PORT))
-            hostgen_socket.sendall(host_info)
-            hostgen_socket.close()
+            hostgen_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            hostgen_s.connect((HOST, PORT))
+            hostgen_s.sendall(host_info)
             break
 
         print("room name and/or password must not be longer than 16 characters\n")
-    print(f"\nverify room information: \nroom name: {roomname}\nroom password: {password}")
-
+    #print(f"\nverify room information: \nroom name: {roomname}\nroom password: {password}") # +wait
     print("room configured")
-    roomhost_load()
+    roomhost_load(hostgen_s)
 
 # Settings menu
 def settings():
@@ -83,10 +82,21 @@ def roomjoin_load():
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('')
 
-def roomhost_load():
+def roomhost_load(hgen_s):
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-#        print('\n\n[########-------------------------] 24% \nroom configured, awaiting peer establishment...')
+    print('\n\n[#############---------------------------] 33% \nroom configured, awaiting peer establishment...')
+    established_client = hgen_s.recv(1024)
+    cls()
+    print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
+    print('\n\n[##########################--------------] 66% \npeer confirmation from server, connecting...')
+    hgen_s.connect(established_client, PORT)
+    cls()
+    print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
+    print('\n\n[########################################] 100% \nconnection successful, please wait...')
+
+async def chatroom():
+    pass  # this might get pushed up when new messages are recieved, might have to clear the terminal and reprint, which requires a list of all chat messages to be stored locally to be reprint.
 
 # Homepage
 def main():
@@ -102,4 +112,4 @@ def main():
     if point == 3: settings()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
