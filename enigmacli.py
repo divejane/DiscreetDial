@@ -21,11 +21,10 @@ def point_check(max): # return user input if within a range
 def roomlist_load(): # List room names 
     # Request list of rooms from server
     cls()
-    roomrequest_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    roomrequest_socket.connect((HOST, PORT))
-    roomrequest_socket.sendall(b'roomrequest')
-    open_hosts = pickle.loads(roomrequest_socket.recv(1024))
-    roomrequest_socket.close()
+    roomrequest_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    roomrequest_s.connect((HOST, PORT))
+    roomrequest_s.sendall(b'roomrequest')
+    open_hosts = pickle.loads(roomrequest_s.recv(1024))
 
     # Print room names w/ formatting 
     print('|     room name     |\n')
@@ -41,7 +40,7 @@ def roomlist_load(): # List room names
 
     # Send request to server to delete room information 
     else:
-        roomjoin_load()
+        roomjoin_load(roomrequest_s)
 
 # Room creation 
 def room_gen(): 
@@ -77,26 +76,26 @@ def settings():
         main()
 
 # Loading screens for client and host
-def roomjoin_load():
+def roomjoin_load(jgen_s):
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    print('')
+    print('sent reqeuest for host info...')
+    established_client = jgen_s.recv(1024)
+    print('host info recieved, attempting to connect...')
+    jgen_s.connect(established_client, PORT)
+    print('\nconnection successful, please wait...')
 
 def roomhost_load(hgen_s):
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    print('\n\n[#############---------------------------] 33% \nroom configured, awaiting peer establishment...')
+    print('\n\nroom configured, awaiting peer establishment...')
     established_client = hgen_s.recv(1024)
-    cls()
-    print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    print('\n\n[##########################--------------] 66% \npeer confirmation from server, connecting...')
+    print('\npeer confirmation from server, connecting...')
     hgen_s.connect(established_client, PORT)
-    cls()
-    print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    print('\n\n[########################################] 100% \nconnection successful, please wait...')
+    print('\nconnection successful, please wait...')
 
-async def chatroom():
-    pass  # this might get pushed up when new messages are recieved, might have to clear the terminal and reprint, which requires a list of all chat messages to be stored locally to be reprint.
+#async def chatroom():
+#    pass  # this might get pushed up when new messages are recieved, might have to clear the terminal and reprint, which requires a list of all chat messages to be stored locally to be reprint.
 
 # Homepage
 def main():
@@ -112,4 +111,4 @@ def main():
     if point == 3: settings()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

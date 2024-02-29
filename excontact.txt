@@ -1,5 +1,0 @@
-    #    deleterequest = str.encode(f'deleterequest{usinp}')
-    #    roomjoin_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #    roomjoin_socket.connect((HOST, PORT))
-    #    roomjoin_socket.sendall(deleterequest) # Send room list index to server with deleterequest
-    #    roomjoin_socket.close()
