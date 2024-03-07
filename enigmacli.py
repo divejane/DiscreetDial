@@ -89,7 +89,9 @@ def roomhost_load(hgen_s):
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('\n\nroom configured, awaiting peer establishment...')
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind('', PORT)
+    s.bind(('', PORT))
+    s.listen()
+    conn, addr = s.accept()
     print('\nconnection successful, please wait...')
 
 #async def chatroom():
