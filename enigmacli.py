@@ -1,8 +1,8 @@
 # TODO: remove all db lines, including the fake hostlist in the server 
 
-import socket, os, pickle, asyncio
+import socket, os, pickle
 
-HOST = "13.59.31.127"
+HOST = "3.138.170.25"
 PORT = 9236
 
 username = "anon"
@@ -40,7 +40,7 @@ def roomlist_load(): # List room names
 
     # Send request to server to delete room information 
     else:
-        roomjoin_load(roomrequest_s)
+        roomjoin_load(roomrequest_s, usinp, open_hosts)
 
 # Room creation 
 def room_gen(): 
@@ -76,27 +76,24 @@ def settings():
         main()
 
 # Loading screens for client and host
-def roomjoin_load(jgen_s):
+def roomjoin_load(jgen_s, rqst_room, hlist):
     cls()
+    jgen_s.sendall(f'rmrequest{rqst_room}'.encode())
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
-    print('sent reqeuest for host info...')
-    established_client = jgen_s.recv(1024)
-    print('host info recieved, attempting to connect...')
-    jgen_s.connect(established_client, PORT)
+    print('sent host connection info...')
+    jgen_s.connect(hlist[rqst_room][0], hlist[rqst_room][1])
     print('\nconnection successful, please wait...')
 
 def roomhost_load(hgen_s):
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('\n\nroom configured, awaiting peer establishment...')
-    established_client = hgen_s.recv(1024)
-    print('\npeer confirmation from server, connecting...')
-    hgen_s.connect(established_client, PORT)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind('', PORT)
     print('\nconnection successful, please wait...')
 
 #async def chatroom():
-#    pass  # this might get pushed up when new messages are recieved, might have to clear the terminal and reprint, which requires a list of all chat messages to be stored locally to be reprint.
-
+    
 # Homepage
 def main():
     cls()
