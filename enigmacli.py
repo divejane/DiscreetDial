@@ -81,7 +81,7 @@ def roomjoin_load(jgen_s, rqst_room, hlist):
     jgen_s.sendall(f'rmrequest{rqst_room}'.encode())
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('sent host connection info...')
-    jgen_s.connect(hlist[rqst_room][0], hlist[rqst_room][1])
+    jgen_s.connect((hlist[rqst_room][0], hlist[rqst_room][1]))
     print('\nconnection successful, please wait...')
 
 def roomhost_load(hgen_s):
