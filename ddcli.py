@@ -54,12 +54,13 @@ def room_gen():
             hostgen_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             hostgen_s.connect((HOST, PORT))
             hostgen_s.sendall(host_info)
+            hostgen_s.close()
             break
 
         print("room name and/or password must not be longer than 16 characters\n")
     #print(f"\nverify room information: \nroom name: {roomname}\nroom password: {password}") # +wait
     print("room configured")
-    roomhost_load(hostgen_s)
+    roomhost_load()
 
 # Settings menu
 def settings():
@@ -79,12 +80,15 @@ def settings():
 def roomjoin_load(jgen_s, rqst_room, hlist):
     cls()
     jgen_s.sendall(f'rmrequest{rqst_room}'.encode())
+    jgen_s.close()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('sent host connection info...')
-    jgen_s.connect((hlist[rqst_room][0], hlist[rqst_room][1]))
+#    print(hlist[rqst_room][0], hlist[rqst_room][1])
+    js = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    js.connect((hlist[rqst_room][0], hlist[rqst_room][1]))
     print('\nconnection successful, please wait...')
 
-def roomhost_load(hgen_s):
+def roomhost_load():
     cls()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('\n\nroom configured, awaiting peer establishment...')
