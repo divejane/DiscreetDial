@@ -83,7 +83,7 @@ def roomjoin_load(jgen_s, rqst_room, hlist):
     jgen_s.close()
     print("           _                \n ___ ___  (_)__ ___ _  ___ _\n/ -_) _ \/ / _ `/  ' \/ _ `/\n\__/_//_/_/\_, /_/_/_/\_,_/ \n          /___/             \n\n")
     print('sent host connection info...')
-#    print(hlist[rqst_room][0], hlist[rqst_room][1])
+    print(hlist[rqst_room][0], hlist[rqst_room][1])
     js = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     js.connect((hlist[rqst_room][0], hlist[rqst_room][1]))
     print('\nconnection successful, please wait...')
