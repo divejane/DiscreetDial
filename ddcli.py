@@ -113,7 +113,7 @@ def roomhost_load():
     )
     print("\n\nroom configured, awaiting peer establishment...")
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(("", PORT))
+    s.bind(("localhost", PORT))
     s.listen()
     conn, addr = s.accept()
     print("\nconnection successful, please wait...")
