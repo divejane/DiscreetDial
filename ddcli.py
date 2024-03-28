@@ -102,7 +102,7 @@ def roomjoin_load(jgen_s, rqst_room, hlist):
     print("sent host connection info...")
     print(hlist[rqst_room][0], PORT)
     js = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    js.connect((hlist[rqst_room][0], PORT))
+    js.connect(("localhost", PORT))
     print("\nconnection successful, please wait...")
 
 
