@@ -4,7 +4,7 @@ import os
 import pickle
 import socket
 
-HOST = "3.138.170.25"
+HOST = "3.15.139.172"
 PORT = 9236
 
 username = "anon"
